@@ -1,62 +1,60 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+	addAdults,
+	addChildren,
+	removeAdults,
+	removeChildren,
+	reset,
+} from "./store";
 import Counter from "./components/Counter";
 import { Button } from "@mui/material";
 
 function App() {
-	const [adults, setAdults] = useState(0);
-	const [children, setChildren] = useState(0);
+	const dispatch = useDispatch();
 
-	const addAdults = () => {
-		setAdults((currentAdults) => {
-			return currentAdults + 1;
-		});
+	const adultsNum = useSelector((state) => {
+		return state.adults;
+	});
+	const childrenNum = useSelector((state) => {
+		return state.children;
+	});
+
+	const handleAdultsAdd = () => {
+		dispatch(addAdults());
 	};
 
-	const removeAdults = () => {
-		setAdults((currentAdults) => {
-			if (currentAdults) {
-				return currentAdults - 1;
-			}
-			return 0;
-		});
+	const handleAdultsRemove = () => {
+		dispatch(removeAdults());
 	};
 
-	const addChildren = () => {
-		setChildren((currentChildren) => {
-			return currentChildren + 1;
-		});
+	const handleChildrenAdd = () => {
+		dispatch(addChildren());
 	};
 
-	const removeChildren = () => {
-		setChildren((currentChildren) => {
-			if (currentChildren) {
-				return currentChildren - 1;
-			}
-			return 0;
-		});
+	const handleChildrenRemove = () => {
+		dispatch(removeChildren());
 	};
 
 	const handleReset = () => {
-		setAdults(0);
-		setChildren(0);
+		dispatch(reset());
 	};
 
 	return (
 		<div>
 			<div style={{ display: "flex", justifyContent: "center" }}>
 				<Counter
-					addAdults={addAdults}
-					removeAdults={removeAdults}
 					label="Adults"
+					addAdults={handleAdultsAdd}
+					removeAdults={handleAdultsRemove}
 				>
-					{adults}
+					{adultsNum}
 				</Counter>
 				<Counter
 					label="Children"
-					addChildren={addChildren}
-					removeChildren={removeChildren}
+					addChildren={handleChildrenAdd}
+					removeChildren={handleChildrenRemove}
 				>
-					{children}
+					{childrenNum}
 				</Counter>
 			</div>
 			<div style={{ textAlign: "center", marginTop: "10px" }}>
